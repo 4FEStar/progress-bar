@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.circleProgress_wrapper {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    font-size: 30px;
+}
+
+.wrapper {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
+.circleProgress {
+    width: 160px;
+    height: 160px;
+    border: 20px solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+}
+
+.leftcircle {
+    border-top: 20px solid green;
+    border-left: 20px solid green;
+    transform: rotate(-45deg);
+    left: 0;
+}
+
+.rightcircle {
+    border-top: 20px solid green;
+    border-right: 20px solid green;
+    transform: rotate(45deg);
+    right: 0;
+}
+
+.bgcircle {
+    border: 20px solid yellow;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+}
+
+.circle_number {
+    width: 100%;
+    height: 100%;
+    float: left;
+    text-align: center;
+    line-height: 200px;
+}
+
+.barProgress {
+    width: 200px;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: gray;
+    position: relative;
+}
+
+.barProgress-in {
+    width: 0px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background-color: yellow;
+}
+
+.sandglass-bar {
+    width: 50px;
+    height: 100px;
+    position: relative;
+    background-color: gray;
+}
+
+.sandglass {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 0;
+    border-width: 50px 25px;
+    border-style: solid;
+    border-color: transparent #fff transparent #fff;
+    overflow: hidden;
+}
+
+.sandglass-first {
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    bottom: 50px;
+    background-color: yellow;
+}
+
+.sandglass-last {
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    background-color: yellow;
+}
