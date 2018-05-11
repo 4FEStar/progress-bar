@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id="progress" class="progress"></div>
+    <script>
+    
+    function Circle(ctx,color) {
+        this.radius = 100;
+        this.lineWidth = 20;
+        this.strokeStyle = color.backgroundColor;
+        this.fillStyle = color.currentColor;
+        this.lineCap = 'round';
+        this.drawBG(ctx);
+    }    
+    Circle.prototype.drawBG = function(ctx) {
+        ctx.beginPath();
+        ctx.arc(150, 150, this.radius, 0, Math.PI * 2, false);
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = this.strokeStyle;
+        ctx.stroke();
+        ctx.closePath();
+    }
+    Circle.prototype.setValue = function(ctx, value) {
+        ctx.beginPath();
+        ctx.arc(150, 150, this.radius, Math.PI * 1.5, Math.PI * 1.5 + value * Math.PI * 2, false);
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = this.fillStyle;
+        ctx.lineCap = this.lineCap;
+        ctx.stroke();
+        ctx.closePath();
+    }
+    function Bar(ctx, color) {
+        this.lineWidth = 20;
+        this.strokeStyle = color.backgroundColor;
+        this.fillStyle = color.currentColor;
+        this.drawBG(ctx)
+    }
+    Bar.prototype.drawBG = function(ctx) {
+        ctx.beginPath();
+        ctx.moveTo(10,10);
+        ctx.lineWidth = 20;
+        ctx.lineCap = 'round';
+        ctx.lineTo(200,10);
+        ctx.strokeStyle = this.strokeStyle;        
+        ctx.stroke();
+        ctx.closePath();
+    }
+    Bar.prototype.setValue = function(ctx, value) {
+        ctx.beginPath();
+        ctx.moveTo(10, 10);
+        ctx.lineWidth = 20;
+        ctx.lineCap = 'round';
+        ctx.lineTo(200 * value, 10);
+        ctx.strokeStyle = this.fillStyle;
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function Funnel(ctx, color) {
+        this.strokeStyle = color.backgroundColor;
+        this.fillStyle = color.currentColor;
+        this.drawBG(ctx)
+    }
+    Funnel.prototype.drawBG = function(ctx) {
+        ctx.beginPath();
+        var width = 100;//等边三角形的边长
+        var height = width * Math.sin(Math.PI / 3);//计算等边三角形的高
+        ctx.moveTo(50,height);//第一个三角形
+        ctx.lineTo(0, 0);
+        ctx.lineTo(100, 0);
+        ctx.moveTo(50, height);//第二个三角形
+        ctx.lineTo(0, height*2);
+        ctx.lineTo(100, height*2); 
+        ctx.fillStyle = this.strokeStyle;       
+        ctx.fill(); 
+        ctx.closePath();
+    }
+    Funnel.prototype.setValue = function(ctx, value) {
+        ctx.beginPath();
+        var height = 100 * Math.sin(Math.PI / 3);//计算等边三角形的高
+        if (value < 0.5) { //小于0.5只画下三角形
+            ctx.moveTo(0, height*2);
+            ctx.lineTo(100, height*2);
+            ctx.lineTo(100-value*height / (2 * Math.sin(Math.PI / 3)), height * 2 - height  * value);
+            ctx.lineTo(value * height / ( 2 * Math.sin(Math.PI / 3)), height * 2 - height * value);                   
+        } else {  //大于0.5，下三角形+上三角形
+            ctx.moveTo(50, height);
+            ctx.lineTo(0, height * 2);
+            ctx.lineTo(100, height * 2); 
+            ctx.moveTo(50, height);
+            ctx.lineTo( (1-value) * 2 * height / (2 * Math.sin(Math.PI / 3)), height * 2 * (1 - value)); 
+            ctx.lineTo(100 - (1-value) *2* height / (2 * Math.sin(Math.PI / 3)), height * 2 * (1 - value)); 
+        }
+        ctx.fillStyle = this.fillStyle; 
+        ctx.fill(); 
+        ctx.closePath();
+    }
+    function Progress(id, opt) {
+        this.value = opt.value || 0;
+        this.color = opt.color;
+        this.type = opt.type || 'circle';        
+        this.container = document.getElementById(id);
+        this.ctx = {};  //画布
+        this.obj = {};  //实例容器
+        this.render(this.type);
+    }
+    Progress.prototype.render = function(type) {
+        var canvas = document.createElement('canvas');  //动态创建canvas
+        canvas.height = 300
+        this.ctx = canvas.getContext('2d');  
+        switch(type) {
+            case 'circle': this.obj = new Circle(this.ctx, this.color);break;
+            case 'bar': this.obj = new Bar(this.ctx, this.color);break;
+            case 'funnel': this.obj = new Funnel(this.ctx, this.color);break;
+        }
+        this.container.appendChild(canvas);  
+    }
+    Progress.prototype.getValue = function() {
+        return this.value;
+    }
+    Progress.prototype.setValue = function(value) {
+        this.value = value; //设置value值
+        value = value/100; //转换成小数
+        return this.obj.setValue(this.ctx, value)
+    }
+    
+    var progress = new Progress('progress', {
+        type: 'bar', //'circle','bar','funnel'
+        color: {
+            backgroundColor: '#dedede',
+            currentColor: 'yellow'
+        },
+        value: 0
+    });
+    progress.setValue(0)
+    // var value = 0;
+    // var timer = setInterval(()=>{
+    //     value++;
+    //     if (value === 100) clearInterval(timer);
+    //     progress.setValue(value);
+    //     console.log(progress.getValue());
+    // },100)
+    
+    
+
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>进度条UI组件</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+			text-align: center;
+		}
+		.grid {
+			display: inline-block;
+			width: 200px;
+			height: 200px;
+			margin: 50px;
+		}
+		/*条形进度条*/
+		.bar { 
+		    position: relative; 
+		    width: 200px;
+		    height:25px;
+		    border-radius: 12px;
+		    margin: 0 auto;
+		    background-color:#e5e5e5;
+		} 
+		.bar div { 
+		    display: block;
+		    position: relative;
+		    background:#289540;  
+		    height: 25px;    
+		    border-radius: 12px;
+		    line-height: 2px;   
+		    width: 0;
+		}
+
+		/*环形进度条 canvas制作，见circle.js*/
+
+		/*沙漏进度条*/
+		#loader {
+		    height: 40px;
+		    width: 41px;
+		    margin-left: 40%;
+		}
+		#loader #top {
+		    border-top: 20px solid #f57323;
+		    border-right: 20px solid transparent;
+		    border-left: 20px solid transparent;
+		    height: 0px;
+		    width: 1px;
+		}
+		#loader #bottom {
+		    border-right: 20px solid transparent;
+		    border-bottom: 20px solid #f57323;
+		    border-left: 20px solid transparent;
+		    height: 0px;
+		    width: 1px;
+		}
+	</style>
+</head>
+<body>
+	<div class="grid" id="green">
+        <div id="box" class="bar">
+            <div id="process"></div>
+        </div>
+        <input type="range" id="barRange" value="0"/>
+        <span id="numRange"></span>
+    </div>
+
+	<div class="grid">
+		<canvas id="a" width='200' height='200'></canvas>
+		<input id="a_slide" type="range" min='0' max='100'>
+		<button id="a_restart">restart</button>
+	</div>
+
+	<div class="grid">
+		<div id="loader">
+		    <div id="top"></div>
+		    <div id="bottom"></div>
+		</div>
+        <input type="range" id="barRange" value="0"/>
+
+	</div>
+
+	<script src="circle.js"></script>
+	<script>
+		window.onload = function(){
+			/*条形进度条*/
+    		var percentage = document.getElementById("percentage");
+        	var box = document.getElementById("box");
+		    var pro = document.getElementById("process");
+		    var range = document.getElementById("barRange");
+    		//模块化策略，函数式编程
+    		class barProgress {
+    			//构造函数
+    			constrctor(firstPer,width,color){
+    				setBar(firstPer,width,color);
+    			}
+    			//滑动
+    			slider(evt){
+	    			document.getElementById('barRange').addEventListener('input', function(e) {
+						pro.style.width = range.value+"%";
+			        	document.getElementById("numRange").innerHTML=range.value+"%";
+					});
+    			}
+    		};
+    		//分块实现功能
+    		function setBar(firstPer,width,color){
+		        pro.style.width = firstPer+"%";
+		        box.style.width = width+"%";
+		        pro.style.backgroundColor = color;
+			    document.getElementById("numRange").innerHTML=firstPer+"%";
+			    document.getElementById('barRange').value = firstPer+"%";
+    		}    		
+    		//setBar(20,"100px","red");
+			var liu = function(x){
+				var a = new Circle({
+					element: document.getElementById('a'),
+					current: x*0.01//初始值
+				})
+				document.getElementById('a_slide').addEventListener('input', function(e) {
+					a.draw(e.target.value / 100);
+				})
+				document.getElementById('a_restart').addEventListener('click', function(e) {
+					a.restart();
+				})
+				var greenBar = new barProgress(x,"100px","green");
+				setBar(20,"100px","green");
+    			greenBar.slider();//封装滑动
+			};
+			liu(20);//实例化
+			
+    	}
+		
+    	/*沙漏型进度条    -------------------------------------待改进----------------------------------*/
+    	function setStyle(div,attribute){
+			for(var i in attribute)
+				a.style[i] = attribute[i];
+		}
+		// var per = document.getElementById("shalou");
+		// var sand = document.getElementById("sand");
+		// var sand1 = document.defaultView.getComputedStyle(sand,"::after");
+		// console.log(sand1['backgroundPosition'])
+		// sand1.style['backgroundPosition']="0 -20px";
+	</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>5.6 homework</title>
+    <link rel="stylesheet" href="main.css">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="mybar" data-type="circle" data-color="green" data-bgcolor="gray" data-number="40">
+        </div>
+        <!-- 
+            使用 data-type 设置样式：circle、bar、sandglass
+            使用 data-color 设置当前进度颜色
+            使用 data-bgcolor 设置进度槽颜色
+            使用 data-number 设置当前进度
+         -->
+    </div>
+    <script src="index.js"></script>
+    <script type="text/javascript">
+        let pro = new progressBar('mybar');
+        //可通过 getAttribute 获取或设置值
+    </script>
+</body>
+
+</html>

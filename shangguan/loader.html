@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>loader</title>
+	<style>	
+	body{
+		padding: 0px;
+		border: none;
+		margin: 0px;
+	}
+		.tiaotiao{
+			height: 30px;
+			width: 100px;
+			border-radius: 30px;
+			background: #87BF29;
+		}
+		.tiaotiao1{
+			height: 30px;
+			width: 100px;
+			position: absolute;
+			clip: rect(0px,30px,30px,0px);
+			border-radius: 30px;
+			background: black;
+		}
+		.top{
+			margin-top: 50px;
+			height: 0px;
+			width: 0px;
+			border-color: black transparent transparent;
+			border-width: 30px;
+			border-style: solid;
+			border-radius: 20px;
+		}
+		.bottom{
+			margin-top: -60px;
+			height: 0px;
+			width: 0px;
+			border-radius: 20px;
+			border-color: transparent  transparent yellow;
+			border-width: 30px;
+			border-style: solid;
+		}
+		.top1{
+			/* margin-top: 12px; */
+			height: 0px;
+			width: 0px;
+			position: absolute;
+			top: 50px;
+			clip: rect(0px,auto,auto,auto);
+			border-color: blue transparent transparent;
+			border-width: 30px;
+			border-style: solid;
+			border-radius: 20px;
+		}
+		.bottom1{
+			height: 0px;
+			width: 0px;
+			position: absolute;
+			top: 50px;
+			clip: rect(auto,auto,30px,auto);
+			border-color: transparent transparent blue;
+			border-width: 30px;
+			border-style: solid;
+			border-radius: 20px;
+		}
+		.circle{
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+
+			border-width: 20px;
+			border-color: red transparent transparent transparent;
+			border-style: solid;
+			transform: rotate(100deg);
+			font-size: 50px;
+			text-align: center;
+			line-height: 100px;
+		}
+		.circle1{
+			transform: rotate(-100deg);
+		}
+		.circle2{
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			border-width: 20px;
+			border-color: #fff transparent transparent transparent;
+			border-style: solid;
+			position: absolute;
+			top:0px;
+			font-size: 50px;
+			text-align: center;
+			line-height: 100px;
+			
+		}
+	</style>
+
+</head>
+<body>
+</body>	<script>
+	
+	
+	
+		class Loader{
+			constructor(){
+			this.div1=document.createElement('div');
+			this.div1=document.body.appendChild(this.div1)
+			}
+			createLoader(type){
+			 	switch(type) {
+			 		case 1:
+			 		this.tiaoLoader();
+			 		break;
+			 		case 2:
+			 		this.towerLoader();
+			 		break;
+			 		case 3:
+			 		this.circleLoader();
+			 		break;
+			 	}
+			}
+			timerLoad(long,type){
+				let num=0;
+				var c1=	document.getElementById('circle1')
+				var c2=	document.getElementById('circle2')
+				var c= document.getElementById('circle')
+				 let timer =setInterval(function(){
+					if(num==long){
+						clearInterval(timer);
+						num=null;
+						timer=null;
+					}
+					num++
+					switch(type){
+						case 1:
+					document.getElementById('tiao1').style.clip="rect(0px,"+num+"px,30px,0px)";
+							break;
+						case 2:
+					document.getElementById('top1').style.clip='rect('+num+'px,auto,auto,auto)';
+					document.getElementById('bottom1').style.clip='rect('+(60-num)+'px,auto,auto,auto)'	
+							break;
+						case 3:
+						if(num==25){
+							c.style.borderColor='red red transparent transparent'
+						}else if(num==50){
+							c.style.borderColor='red red red transparent'
+						}else if(num==75){
+							c2.style.borderColor='transparent transparent red red'
+						}
+						
+						c2.style.transform='rotate('+num*4.6+'deg)'
+				     	c.style.transform='rotate('+num+'deg)'
+				     	c1.style.transform='rotate(-'+num+'deg)'
+				     	c1.innerHTML=num+'%'
+					
+					}
+
+				},100);
+			}
+			tiaoLoader(){
+			var div=`<div class="tiaotiao" id="tiao"><div class="tiaotiao1" id="tiao1"></div></div>`
+			 this.div1.innerHTML=div;
+			 this.timerLoad(99,1);
+			
+			}
+			towerLoader(){
+			var div=`<div class="top"></div><div class="top1" id="top1"></div><div class="bottom"> </div><div class="bottom1" id="bottom1"> </div>`
+			this.div1.innerHTML=div;
+			this.timerLoad(29,2);
+			}
+			circleLoader(){
+				var div=`<div class="circle" id="circle"><div id="circle1" class="circle1">50%</div></div><div class="circle2" id="circle2"></div>`
+				this.div1.innerHTML=div;
+			this.timerLoad(100,3)
+			}
+		}
+		var loader=new Loader();
+		loader.createLoader(2);
+		//1,2,3种不同STYLE的进度条
+	</script>
+</html> 
