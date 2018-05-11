@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Progress</title>
-    <style>
+    <!-- <style>
         body {
             width: 1000px;
             height: 200px;
@@ -109,17 +109,17 @@
             background: cyan;
             cursor: pointer;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <!-- <div id="outerCircle"><div id="innerCircle"><span class="percent"></span></div></div>
     <div id="outerRect"><div id="innerRect"><span class="percent"></span></div></div>
-    <div id="outerCone"><div id="innerCone"></div><span class="percent"></span></div>
-    <div id="percent"><input type="text" id="txt" value=""><span>%</span><input type="submit" value="Submit"></div> -->
+    <div id="outerCone"><div id="innerCone"></div><span class="percent"></span></div> -->
+    <!-- <div id="percent"><input type="text" id="typeTxt"><input type="text" id="bgcTxx"><input type="text" id="fgcTxt"><input type="text" id="perTxt" value=""><span>%</span><input type="submit" value="Submit"></div> -->
 </body>
 <script>
     class Progress {
-        constructor(model = {type:'circle',bgc:'cyan',fgc:'red',per:'0'}){
+        constructor(model = {type:'circle',bgc:'cyan',fgc:'red',per:'60'}){
             //type:类型，默认circle（环形），可选rect(矩形)，可选cone（锥形）
             //bgc：进度槽背景颜色
             //fgc: 进度槽前景颜色
@@ -129,19 +129,13 @@
         }
         render(){
             let head = document.getElementsByTagName('head')[0];
-            const linkTag = document.createElement('link');
+            let linkTag = document.createElement('link');
             const cssUrl = './style.css';
             linkTag.href = cssUrl;
             linkTag.setAttribute('rel','stylesheet');
             linkTag.setAttribute('type','text/css');
             head.appendChild(linkTag);
-            const modelHtml = '';
-            const basicHtml = `
-                <div id="percent">
-                    <input type="text" id="txt" value="">
-                    <span>%</span>
-                    <input type="submit" value="Submit">
-                </div>`;
+            let modelHtml = '';
             if(this.model.type == 'circle'){
                 modelHtml = `
                 <div id="outerCircle">
@@ -167,14 +161,14 @@
                     </span>
                 </div>`;
             }
-            document.body.innerHTML = modelHtml+basicHtml;
+            document.body.innerHTML = modelHtml;
             this.setModel();
             this.setPercent();
         }
         setModel(){
             if(this.model.type == 'circle'){
                 let circle_b = document.getElementById('outerCircle');
-                circle_b.style.background = `conic-gradient(${this.model.fgc} 0 ${this.model.per},${this.model.bgc} 0 100%)`;
+                circle_b.style.background = `conic-gradient(${this.model.fgc} 0 ${this.model.per+'%'},${this.model.bgc} 0 100%)`;
             }else if (this.model.type == 'rect'){
                 let rect_b = document.getElementById('outerRect');
                 let rect_f = document.getElementById('innerRect');
@@ -184,7 +178,7 @@
             }else if (this.model.type == 'cone'){
                 let cone_b = document.getElementById('outerCone');
                 let cone_f = document.getElementById('innerCone');
-                let _h = Math.sqrt((100-parseInt(per))*100) + 'px';
+                let _h = Math.sqrt((100-parseInt(this.model.per))*100) + 'px';
                 cone_b.style.background = `conic-gradient(${this.model.bgc} 12.5%,#fff 0 37.5%,${this.model.fgc} 0 62.5%,#fff 0 87.5%,${this.model.bgc} 0)`;
                 cone_f.style.background = `conic-gradient(${this.model.fgc} 12.5%,#fff 0 37.5%,${this.model.bgc} 0 62.5%,#fff 0 87.5%,${this.model.fgc} 0)`;
                 cone_f.setAttribute('style','height:'+_h);                         
@@ -192,17 +186,13 @@
         }
         setPercent(){
             let _p = document.getElementsByClassName('percent');
-            if(this.model.type == 'circle'){
-                _p[0].innerHTML = this.model.per+'%';
-            }else if (this.model.type == 'rect'){
-                _p[1].innerHTML = this.model.per+'%';
-            }else if (this.model.type == 'cone'){
-                _p[2].innerHTML = this.model.per+'%';
+            for(let i = 0; i < _p.length; i++){
+                _p[i].innerHTML = this.model.per+'%';
             }
         }
     }
-    let percent = parseInt(document.querySelector('#txt').value);
-    let rect = new Progress({type:'rect',bgc:'cyan',fgc:'red',per:percent});
-    let cone = new Progress({type:'cone',bgc:'cyan',fgc:'red',per:percent});
+    let circle = new Progress();
+    // let rect = new Progress({type:'rect',bgc:'cyan',fgc:'red',per:'10'});
+    // let cone = new Progress({type:'cone',bgc:'cyan',fgc:'red',per:'20'});
 </script>
 </html>
